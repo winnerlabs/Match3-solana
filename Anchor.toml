@@ -7,6 +7,9 @@ skip-lint = false
 [programs.localnet]
 match_3 = "9uYGHUUG5oxpJPD4vB2KQb6QoG6Q5SpBG8c64Hd5CmYH"
 
+[programs.devnet]
+match_3 = "9uYGHUUG5oxpJPD4vB2KQb6QoG6Q5SpBG8c64Hd5CmYH"
+
 [registry]
 url = "https://api.apr.dev"
 
