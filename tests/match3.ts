@@ -3,14 +3,13 @@ import { Program } from "@coral-xyz/anchor";
 import { assert, expect } from "chai";
 import { Match3 } from "../target/types/match_3";
 import { BN } from "bn.js";
-import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, CreateAccountParams} from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, PublicKey, Keypair} from "@solana/web3.js";
 import {
   SB_ON_DEMAND_PID,
   Randomness,
   InstructionUtils,
 } from "@switchboard-xyz/on-demand";
 import * as fs from "fs";
-import { publicKey } from "@coral-xyz/anchor/dist/cjs/utils";
 
 describe("match3", () => {
   // Configure the client to use the local cluster.
@@ -24,6 +23,10 @@ describe("match3", () => {
     [Buffer.from("match3"), user.publicKey.toBuffer()],
     program.programId
   )
+  const [playerConfigPDA] = anchor.web3.PublicKey.findProgramAddressSync(
+    [Buffer.from("player_config"), user.publicKey.toBuffer()],
+    program.programId
+  );
   const [inviterPlaceholderPDA] = anchor.web3.PublicKey.findProgramAddressSync(
     [Buffer.from("player_config"), PublicKey.default.toBuffer()],
     program.programId
@@ -42,10 +45,6 @@ describe("match3", () => {
     assert.equal(match3Info.totalScratchcard.toNumber(), 0)
   });
 
-  const [playerConfigPDA] = anchor.web3.PublicKey.findProgramAddressSync(
-    [Buffer.from("player_config"), user.publicKey.toBuffer()],
-    program.programId
-  );
 
   it("init player config!", async () => {
     const tx = await program.methods
@@ -85,34 +84,41 @@ describe("match3", () => {
     console.log("scratchcard balance: ", balanceInSol);
   })
 
-  // it("scraping scratchcard!", async () => {
-  //   // Switchboard sbQueue fixed
-  //   const sbQueue = new PublicKey("5Qv744yu7DmEbU669GmYRqL9kpQsyYsaVKdR8YiBMTaP");
-  //   console.log("sb programid: ", SB_ON_DEMAND_PID.toString());
-  //   // const sbIdl = await Program.fetchIdl(SB_ON_DEMAND_PID, provider);
-  //   // const sbProgram = new Program(sbIdl!, SB_ON_DEMAND_PID, provider);
-  //   const sbProgram = new Program(LoadProgramIdl("tests/sb_on_demand_dev.json"), SB_ON_DEMAND_PID);
-  //   const rngKp = Keypair.generate();
-  //   const [randomness, ix] = await Randomness.create(sbProgram, rngKp, sbQueue);
-  //   console.log("randomness: ", randomness.pubkey.toString());
-  //   const tx = await InstructionUtils.asV0Tx(sbProgram, [ix]);
-  //   const sig = await provider.sendAndConfirm(tx, [user, rngKp]);
-  //   console.log("Your create randomness transaction signature", sig);
+  it("scratching scratchcard!", async () => {
+    const passed_in_card_id = 1;                    //The user-selected scratch card ID, passed in as a parameter
+    // Switchboard sbQueue fixed
+    const sbQueue = new PublicKey("FfD96yeXs4cxZshoPPSKhSPgVQxLAJUT3gefgh84m1Di");
+    console.log("sb programid: ", SB_ON_DEMAND_PID.toString());
+    const sbProgram = new Program(LoadProgramIdl("tests/sb_on_demand_dev.json"), SB_ON_DEMAND_PID);
+    const rngKp = Keypair.generate();
+    const [randomness, ix] = await Randomness.create(sbProgram, rngKp, sbQueue);
+    const commitIx = await randomness.commitIx(sbQueue);
+    console.log("randomness address: ", randomness.pubkey.toString());
+    const tx = await InstructionUtils.asV0Tx(sbProgram, [ix, commitIx]);
+    const sig = await provider.sendAndConfirm(tx, [user, rngKp]);
+    console.log("Your create randomness transaction signature: ", sig);
 
-  //   const [scratchcardPDA]=  anchor.web3.PublicKey.findProgramAddressSync(
-  //     [new BN(1).toArrayLike(Buffer, "le", 8), user.publicKey.toBuffer()],
-  //     program.programId
-  //   )
-  //   console.log("scraping scratchcard scratchcardPDA: ", scratchcardPDA.toString());
-  //   const tx1 = await program.methods
-  //   .scrapingCard(1, new BN(2))
-  //   .accounts({
-  //     scratchcard: scratchcardPDA,
-  //     randomnessAccountData: randomness.pubkey,
-  //   })
-  //   .instruction()
-  //   const rx = await randomness.commitAndReveal([tx1], [user], sbQueue)
-  // })
+    const [scratchcardPDA]=  anchor.web3.PublicKey.findProgramAddressSync(
+      [new BN(passed_in_card_id).toArrayLike(Buffer, "le", 8), user.publicKey.toBuffer()],
+      program.programId
+    )
+    console.log("scraping scratchcard scratchcardPDA: ", scratchcardPDA.toString());
+    const tx1 = await program.methods
+    .scratchingCard(2)
+    .accounts({
+      scratchcard: scratchcardPDA,
+      randomnessAccountData: randomness.pubkey,
+      playerConfig: playerConfigPDA,
+      match3Info: match3InfoPDA,
+    })
+    .instruction()
+    await randomness.commitAndReveal([tx1], [user], sbQueue)
+    const scratchcardInfo = await program.account.scratchCard.fetch(scratchcardPDA);
+    const playerConfigInfo = await program.account.playerConfig.fetch(playerConfigPDA);
+    assert.equal(scratchcardInfo.numberOfScratched, 1);
+    assert.equal(playerConfigInfo.credits, 2);
+    console.log(" ✨ The pattern just scratched out is: ", scratchcardInfo.latestScratchedPattern)
+  })
 });
 
 export function LoadProgramIdl(filepath: string) {

@@ -14,7 +14,7 @@ match_3 = "9uYGHUUG5oxpJPD4vB2KQb6QoG6Q5SpBG8c64Hd5CmYH"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "Devnet"
 wallet = "/Users/star/.config/solana/id.json"
 
 [scripts]

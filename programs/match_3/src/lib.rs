@@ -21,7 +21,7 @@ pub mod match_3 {
     pub fn create_scratchcard(ctx: Context<MintScratchcard>, inviter_pubkey: Pubkey) -> Result<()>{
         MintScratchcard::process(ctx, inviter_pubkey)
     }
-    pub fn scraping_card(ctx: Context<ScrapingCard>, card_id: u8, scraping_position: u64) -> Result<()>{
-        ScrapingCard::process(ctx, card_id, scraping_position)
+    pub fn scratching_card(ctx: Context<ScratchingCard>, scratching_position: u8) -> Result<()>{
+        ScratchingCard::process(ctx, scratching_position)
     }
 }

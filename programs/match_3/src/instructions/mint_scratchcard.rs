@@ -58,11 +58,12 @@ impl<'info> MintScratchcard<'info> {
         // Create scratchcard
         scratchcard.bump = ctx.bumps.scratchcard;
         scratchcard.card_id = match3_info.total_scratchcard + 1;
+        scratchcard.is_win = false;
         scratchcard.number_of_scratched = 0;
-        scratchcard.latest_pattern = 0;
+        scratchcard.latest_scratched_pattern = 0;
         scratchcard.pattern_contents = vec![1, 1, 1, 2, 2, 2, 3, 3, 3];  // 1:WIF, 2:BONK, 3:BOME
         // Charge a fee of 0.1 SOL.
-        transfer_sol(&ctx.accounts.player.to_account_info(), &match3_info.to_account_info(), PRICE_PER_SCRATCHCARD, &ctx.accounts.system_program, false)?;
+        transfer_sol(&mut ctx.accounts.player.to_account_info(), &match3_info.to_account_info(), PRICE_PER_SCRATCHCARD, &ctx.accounts.system_program, false)?;
         match3_info.total_scratchcard += 1;
         player_config.owned_scratchcard += 1;
         msg!("total scratchcard: {}", match3_info.total_scratchcard);

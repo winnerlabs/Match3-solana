@@ -269,7 +269,7 @@
     decimal.js "^10.4.0"
     typescript "^4.8.2"
 
-"@switchboard-xyz/common@^2.3.16", "@switchboard-xyz/common@^2.3.22":
+"@switchboard-xyz/common@^2.3.16", "@switchboard-xyz/common@^2.3.23":
   version "2.3.23"
   resolved "https://registry.npmjs.org/@switchboard-xyz/common/-/common-2.3.23.tgz"
   integrity sha512-oi1UESLZ1w67Tt0s9rSCh3diRGWSybQaeal7DDPVCAc1+QSaYBqTwuoPeAo5su6bNWB+aleG5b2IXZiG0yalIw==
@@ -284,15 +284,15 @@
     yaml "^2.2.1"
 
 "@switchboard-xyz/on-demand@^1.0.52":
-  version "1.0.52"
-  resolved "https://registry.npmjs.org/@switchboard-xyz/on-demand/-/on-demand-1.0.52.tgz"
-  integrity sha512-9feMov8XgPM0dGUp/gum8yykYNrxvGvTDACDX1yNnYUTn5ZIb4jZpsteOddG1FpxAgJLg20fkPij2dfaPIGuew==
+  version "1.0.54"
+  resolved "https://registry.npmjs.org/@switchboard-xyz/on-demand/-/on-demand-1.0.54.tgz"
+  integrity sha512-zuQfNf613Qf0oP9iAlSbfO1eiiXUU2+7gvRJjUuxMnODKHIaky1OxeedwFF3RNPid0+gjamqlWFO5c3tkRPUfw==
   dependencies:
     "@coral-xyz/anchor" "^0.29.0"
     "@solana/spl-token" "^0.4.1"
     "@solana/web3.js" "^1.91.1"
     "@solworks/soltoolkit-sdk" "^0.0.23"
-    "@switchboard-xyz/common" "^2.3.22"
+    "@switchboard-xyz/common" "^2.3.23"
     "@switchboard-xyz/solana.js" "^3.2.5"
     big.js "^6.2.1"
     bs58 "^5.0.0"

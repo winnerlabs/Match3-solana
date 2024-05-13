@@ -8,4 +8,6 @@ pub enum ErrorCodeCustom {
     RandomnessAlreadyRevealed,
     #[msg("Randomness not resolved.")]
     RandomnessNotResolved,
+    #[msg("Credits not enough to play.")]
+    CreditsNotEnough,
 }

@@ -7,3 +7,10 @@ pub const LAMPORTS_PER_SOL: u64 = 1_000_000_000;
 
 /// scratchcard price 0.1 sol
 pub const PRICE_PER_SCRATCHCARD: u64 = LAMPORTS_PER_SOL/10;
+
+/// 3 WIFs reward
+pub const REWARD_WIF : u64 = 10 * LAMPORTS_PER_SOL;
+/// 3 BONKS reward
+pub const REWARD_BONK : u64 = 2 * LAMPORTS_PER_SOL;
+/// 3 BOMES reward
+pub const REWARD_BOME : u64 = LAMPORTS_PER_SOL/2;

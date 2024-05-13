@@ -4,8 +4,9 @@ pub use anchor_lang::prelude::*;
 pub struct ScratchCard {
     pub bump : u8,                // 1
     pub card_id: u64,            // 8
+    pub is_win: bool,                 // 1
     pub number_of_scratched: u8,    // 1
-    pub latest_pattern: i8,      // 1
+    pub latest_scratched_pattern: u8,  // 1
     pub pattern_contents: Vec<u8>,       // 4 + 9
 }
 
