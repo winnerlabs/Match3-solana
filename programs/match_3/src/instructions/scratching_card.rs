@@ -34,7 +34,6 @@ pub struct ScratchingCard<'info> {
 
 impl<'info> ScratchingCard<'info> {
     pub fn process(ctx: Context<ScratchingCard>, scratching_position: u8) -> Result<()> {
-        msg!("Scratching card");
         let scratchcard = &mut ctx.accounts.scratchcard;
         let player = &ctx.accounts.player.to_account_info();
         let player_config = &mut ctx.accounts.player_config;
@@ -42,10 +41,10 @@ impl<'info> ScratchingCard<'info> {
         let system_program = &ctx.accounts.system_program.to_account_info();
         let mut pattern_result = 0;
         scratchcard.number_of_scratched += 1;
+        msg!("Scratching card {}", scratchcard.number_of_scratched);
         match scratchcard.number_of_scratched {
             1 | 2  => {
                 // The 1st, 2nd time free scratching card
-                msg!("Scratching card 2");
                 pattern_result = determine_pattern_by_randomness(&ctx.accounts.randomness_account_data, scratchcard, scratching_position)?;
             },
             3 => {
@@ -79,7 +78,6 @@ impl<'info> ScratchingCard<'info> {
 
 fn determine_pattern_by_randomness<'info>(randomness_account_data: &AccountInfo<'info>,
     scratchcard: &mut Account<'info, ScratchCard>, scratching_position: u8) -> Result<u8> {
-    msg!("determine_pattern_by_randomness in");
     let clock = Clock::get()?;
     let position = scratching_position.to_usize().unwrap();
     let randomness_data = RandomnessAccountData::parse(randomness_account_data.data.borrow()).unwrap();
@@ -90,6 +88,7 @@ fn determine_pattern_by_randomness<'info>(randomness_account_data: &AccountInfo<
     msg!("current size: {}", size);
     let result_index = (revealed_random_value[position]%size).to_usize().unwrap();
     let pattern_result = scratchcard.pattern_contents.remove(result_index);
+    msg!("pattern result: {}", pattern_result);
     Ok(pattern_result)
 }
 

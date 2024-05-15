@@ -8,6 +8,7 @@ import {
   SB_ON_DEMAND_PID,
   Randomness,
   InstructionUtils,
+  sleep,
 } from "@switchboard-xyz/on-demand";
 import * as fs from "fs";
 
@@ -76,12 +77,11 @@ describe("match3", () => {
     const match3Info = await program.account.match3Info.fetch(match3InfoPDA);
     const playerConfig = await program.account.playerConfig.fetch(playerConfigPDA);
     const scratchcard = await program.account.scratchCard.fetch(scratchcardPDA);
+    console.log("scratchcard id: ", scratchcard.cardId.toNumber());
     assert.equal(match3Info.totalScratchcard.toNumber(), 1);
     assert.equal(playerConfig.credits, 0);
     assert.equal(playerConfig.ownedScratchcard, 1);
     assert.equal(scratchcard.cardId.toNumber(), 1);
-    let balanceInSol = await program.provider.connection.getBalance(scratchcardPDA)/LAMPORTS_PER_SOL;
-    console.log("scratchcard balance: ", balanceInSol);
   })
 
   it("scratching scratchcard!", async () => {
@@ -103,7 +103,7 @@ describe("match3", () => {
       program.programId
     )
     console.log("scraping scratchcard scratchcardPDA: ", scratchcardPDA.toString());
-    const tx1 = await program.methods
+    const scratchIx = await program.methods
     .scratchingCard(2)
     .accounts({
       scratchcard: scratchcardPDA,
@@ -111,13 +111,15 @@ describe("match3", () => {
       playerConfig: playerConfigPDA,
       match3Info: match3InfoPDA,
     })
-    .instruction()
-    await randomness.commitAndReveal([tx1], [user], sbQueue)
+    .instruction();
+    await randomness.commitAndReveal([scratchIx], [user], sbQueue)
     const scratchcardInfo = await program.account.scratchCard.fetch(scratchcardPDA);
     const playerConfigInfo = await program.account.playerConfig.fetch(playerConfigPDA);
+    assert.equal(scratchcardInfo.cardId.toNumber(), 1);
     assert.equal(scratchcardInfo.numberOfScratched, 1);
     assert.equal(playerConfigInfo.credits, 2);
-    console.log(" ✨ The pattern just scratched out is: ", scratchcardInfo.latestScratchedPattern)
+    console.log(" ✨ The pattern just scratched out is: ", scratchcardInfo.latestScratchedPattern);
+    console.log(" 🔮 you is win? let we check it: ", scratchcardInfo.isWin);
   })
 });
 

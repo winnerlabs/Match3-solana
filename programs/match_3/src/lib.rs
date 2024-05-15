@@ -7,7 +7,7 @@ pub mod utils;
 
 pub use instructions::*;
 
-declare_id!("9uYGHUUG5oxpJPD4vB2KQb6QoG6Q5SpBG8c64Hd5CmYH");
+declare_id!("9uw5FvAMLJwjC9frPC4vZxjgE7gWAShzDWLFJx6ThfVB");
 
 #[program]
 pub mod match_3 {
