@@ -35,11 +35,12 @@ pub struct ScratchingCard<'info> {
 impl<'info> ScratchingCard<'info> {
     pub fn process(ctx: Context<ScratchingCard>, scratching_position: u8) -> Result<()> {
         let scratchcard = &mut ctx.accounts.scratchcard;
+        require!(!scratchcard.is_win, ErrorCodeCustom::AlreadyWon);
         let player = &ctx.accounts.player.to_account_info();
         let player_config = &mut ctx.accounts.player_config;
         let match3_info = &ctx.accounts.match3_info.to_account_info();
         let system_program = &ctx.accounts.system_program.to_account_info();
-        let mut pattern_result = 0;
+        let pattern_result;
         scratchcard.number_of_scratched += 1;
         msg!("Scratching card {}", scratchcard.number_of_scratched);
         match scratchcard.number_of_scratched {
@@ -68,6 +69,7 @@ impl<'info> ScratchingCard<'info> {
             },
             _ => {
                 // invalid
+                return Err(ErrorCodeCustom::ExceededMaxScratchingTimes.into());
             }
         }
         scratchcard.latest_scratched_pattern = pattern_result;
