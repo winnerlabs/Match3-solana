@@ -65,7 +65,7 @@ describe("match3", () => {
     )
     console.log("create scratchcard scratchcardPDA: ", scratchcardPDA.toString());
     const tx = await program.methods
-    .createScratchcard(PublicKey.default)
+    .mintScratchcard(PublicKey.default)
     .accounts({
       playerConfig: playerConfigPDA,
       scratchcard: scratchcardPDA,

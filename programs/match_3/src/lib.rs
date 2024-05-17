@@ -18,7 +18,7 @@ pub mod match_3 {
     pub fn init_player_config(ctx: Context<InitPlayerConfig>) -> Result<()>{
         InitPlayerConfig::process(ctx)
     }
-    pub fn create_scratchcard(ctx: Context<MintScratchcard>, inviter_pubkey: Pubkey) -> Result<()>{
+    pub fn mint_scratchcard(ctx: Context<MintScratchcard>, inviter_pubkey: Pubkey) -> Result<()>{
         MintScratchcard::process(ctx, inviter_pubkey)
     }
     pub fn scratching_card(ctx: Context<ScratchingCard>, scratching_position: u8) -> Result<()>{
