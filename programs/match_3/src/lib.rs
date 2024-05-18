@@ -7,16 +7,13 @@ pub mod utils;
 
 pub use instructions::*;
 
-declare_id!("9uw5FvAMLJwjC9frPC4vZxjgE7gWAShzDWLFJx6ThfVB");
+declare_id!("9trLskFrXf8tPGJTjrCggUpqdKbBPK6SftmiUKoiR2Pv");
 
 #[program]
 pub mod match_3 {
     use super::*;
     pub fn init_match3(ctx: Context<InitMatch3>) -> Result<()>{
         InitMatch3::process(ctx)
-    }
-    pub fn init_player_config(ctx: Context<InitPlayerConfig>) -> Result<()>{
-        InitPlayerConfig::process(ctx)
     }
     pub fn mint_scratchcard(ctx: Context<MintScratchcard>, inviter_pubkey: Pubkey) -> Result<()>{
         MintScratchcard::process(ctx, inviter_pubkey)

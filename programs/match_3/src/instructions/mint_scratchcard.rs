@@ -16,9 +16,11 @@ pub struct MintScratchcard<'info> {
     )]
     scratchcard: Account<'info, ScratchCard>,
     #[account(
-        mut,
+        init_if_needed,
+        payer = player,
         seeds = [b"player_config".as_ref(), player.key().as_ref()],
-        bump = player_config.bump,
+        bump,
+        space = 8 + std::mem::size_of::<PlayerConfig>()
     )]
     player_config: Account<'info, PlayerConfig>,
     #[account(mut,
@@ -38,11 +40,20 @@ pub struct MintScratchcard<'info> {
 
 impl<'info> MintScratchcard<'info> {
     pub fn process(ctx: Context<MintScratchcard>, inviter_pubkey: Pubkey) -> Result<()> {
-        msg!("total scratchcard: {}", ctx.accounts.match3_info.total_scratchcard);
         let player_config = &mut ctx.accounts.player_config;
         let inviter_config = &mut ctx.accounts.inviter_config;
         let scratchcard = &mut ctx.accounts.scratchcard;
         let match3_info = &mut ctx.accounts.match3_info;
+
+        if !player_config.is_initialized {
+            msg!("player_config is not initialized");
+            // init player config
+            player_config.is_initialized = true;
+            player_config.bump = ctx.bumps.player_config;
+            player_config.credits = 0;
+            player_config.owned_scratchcard = 0;
+            player_config.inviter_pubkey = Pubkey::default();        // placeholder, will be updated later
+        }
 
         if player_config.inviter_pubkey.eq(&Pubkey::default()) && inviter_pubkey.ne(&Pubkey::default()) {
             // Bind invitation relationship

@@ -46,17 +46,6 @@ describe("match3", () => {
     assert.equal(match3Info.totalScratchcard.toNumber(), 0)
   });
 
-
-  it("init player config!", async () => {
-    const tx = await program.methods
-    .initPlayerConfig()
-    .accounts({
-      playerConfig: playerConfigPDA,
-    })
-    .rpc();
-    console.log("Your init player config transaction signature", tx);
-  })
-
   it("mint scratchcard!", async () => {
     const match3InfoBefore = await program.account.match3Info.fetch(match3InfoPDA);
     const [scratchcardPDA] = anchor.web3.PublicKey.findProgramAddressSync(

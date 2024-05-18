@@ -9,6 +9,7 @@ pub struct Match3Info {
 
 #[account]
 pub struct PlayerConfig {
+    pub is_initialized : bool,        // 1
     pub bump : u8,                     // 1
     pub credits : u32,                // 4
     pub owned_scratchcard : u32,      // 4
