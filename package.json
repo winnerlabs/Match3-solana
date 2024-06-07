@@ -5,7 +5,13 @@
     },
     "dependencies": {
         "@coral-xyz/anchor": "^0.29.0",
-        "@switchboard-xyz/on-demand": "^1.0.52"
+        "@metaplex-foundation/mpl-bubblegum": "^4.1.0",
+        "@metaplex-foundation/umi": "^0.9.1",
+        "@metaplex-foundation/umi-bundle-defaults": "^0.9.1",
+        "@metaplex-foundation/umi-signer-wallet-adapters": "^0.9.1",
+        "@solana/wallet-adapter-react": "^0.15.35",
+        "@switchboard-xyz/on-demand": "^1.0.52",
+        "@winnerlabs/match3": "^1.0.1"
     },
     "devDependencies": {
         "@types/bn.js": "^5.1.0",

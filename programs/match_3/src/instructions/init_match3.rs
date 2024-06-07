@@ -1,17 +1,21 @@
 pub use anchor_lang::prelude::*;
-use crate::state::*;
-use crate::constants::*;
+pub use crate::state::*;
+pub use crate::constants::*;
+pub use crate::errors::ErrorCodeCustom;
 
 #[derive(Accounts)]
 pub struct InitMatch3<'info> {
-    #[account(mut,
-    address = ADMIN_PUBKEY)]
+    #[account(
+        mut,
+        address = ADMIN_PUBKEY @ErrorCodeCustom::Unauthorized
+    )]
     admin: Signer<'info>,
-    #[account(init,
-    seeds = [b"match3".as_ref(), admin.key().as_ref()],
-    bump,
-    payer = admin,
-    space = 8 + std::mem::size_of::<Match3Info>()
+    #[account(
+        init,
+        seeds = [b"match3".as_ref(), admin.key().as_ref()],
+        bump,
+        payer = admin,
+        space = 8 + std::mem::size_of::<Match3Info>()
     )]
     match3_info: Account<'info, Match3Info>,
     #[account(
@@ -33,6 +37,7 @@ impl<'info> InitMatch3<'info> {
 
         match3_info.bump = ctx.bumps.match3_info;
         match3_info.total_scratchcard = 0;
+        match3_info.merkle_tree = Pubkey::default();
 
         place_holder.bump = ctx.bumps.place_holder;
         Ok(())

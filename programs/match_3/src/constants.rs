@@ -14,3 +14,7 @@ pub const REWARD_WIF : u64 = 10 * LAMPORTS_PER_SOL;
 pub const REWARD_BONK : u64 = 2 * LAMPORTS_PER_SOL;
 /// 3 BOMES reward
 pub const REWARD_BOME : u64 = LAMPORTS_PER_SOL/2;
+
+/// Merkletree config, max supply 1,048,576
+pub const MAX_TREE_DEPTH: u32 = 20;
+pub const MAX_TREE_BUFFER_SIZE: u32 = 64;

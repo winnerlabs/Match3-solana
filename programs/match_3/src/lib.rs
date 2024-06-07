@@ -15,6 +15,9 @@ pub mod match_3 {
     pub fn init_match3(ctx: Context<InitMatch3>) -> Result<()>{
         InitMatch3::process(ctx)
     }
+    pub fn add_new_tree(ctx: Context<AddNewTree>) -> Result<()>{
+        AddNewTree::process(ctx)
+    }
     pub fn mint_scratchcard(ctx: Context<MintScratchcard>, inviter_pubkey: Pubkey) -> Result<()>{
         MintScratchcard::process(ctx, inviter_pubkey)
     }

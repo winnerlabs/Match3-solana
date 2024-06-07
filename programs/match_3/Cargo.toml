@@ -20,3 +20,4 @@ anchor-lang = { version = "0.29.0", features = ["init-if-needed"] }
 solana-program = "*"
 bytemuck = "1.15.0"
 switchboard-on-demand = "0.1.2"
+mpl-bubblegum = "1.4.0"
