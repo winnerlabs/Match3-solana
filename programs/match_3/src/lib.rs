@@ -7,7 +7,7 @@ pub mod utils;
 
 pub use instructions::*;
 
-declare_id!("9trLskFrXf8tPGJTjrCggUpqdKbBPK6SftmiUKoiR2Pv");
+declare_id!("Bo62M4w6RYsffaCxKSNa1GnZX1waKJcBsrrPm68HXvae");
 
 #[program]
 pub mod match_3 {
@@ -18,8 +18,8 @@ pub mod match_3 {
     pub fn add_new_tree(ctx: Context<AddNewTree>) -> Result<()>{
         AddNewTree::process(ctx)
     }
-    pub fn mint_scratchcard(ctx: Context<MintScratchcard>, inviter_pubkey: Pubkey) -> Result<()>{
-        MintScratchcard::process(ctx, inviter_pubkey)
+    pub fn mint_scratchcard(ctx: Context<MintScratchcard>, inviter_pubkey: Pubkey, mint_quantity: u8) -> Result<()>{
+        MintScratchcard::process(ctx, inviter_pubkey, mint_quantity)
     }
     pub fn scratching_card(ctx: Context<ScratchingCard>, scratching_position: u8) -> Result<()>{
         ScratchingCard::process(ctx, scratching_position)

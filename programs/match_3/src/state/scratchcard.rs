@@ -3,7 +3,6 @@ pub use anchor_lang::prelude::*;
 #[account]
 pub struct ScratchCard {
     pub bump : u8,                // 1
-    pub card_id: u64,            // 8
     pub is_win: bool,                 // 1
     pub number_of_scratched: u8,    // 1
     pub latest_scratched_pattern: u8,  // 1
@@ -12,5 +11,5 @@ pub struct ScratchCard {
 }
 
 impl ScratchCard {
-    pub const LEN: usize = 8 + 1 + 8 + 1 + 1 + 1 + 100 + 4 + 9;
+    pub const LEN: usize = 8 + 1 + 1 + 1 + 1 + 100 + 4 + 9;
 }

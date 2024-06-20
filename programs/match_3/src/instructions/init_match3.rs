@@ -34,7 +34,6 @@ impl<'info> InitMatch3<'info> {
     pub fn process(ctx: Context<InitMatch3>) -> Result<()> {
         let match3_info = &mut ctx.accounts.match3_info;
         let place_holder = &mut ctx.accounts.place_holder;
-
         match3_info.bump = ctx.bumps.match3_info;
         match3_info.total_scratchcard = 0;
         match3_info.merkle_tree = Pubkey::default();

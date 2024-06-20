@@ -4,6 +4,10 @@ use anchor_lang::prelude::*;
 pub enum ErrorCodeCustom {
     #[msg("Unauthorized access attempt.")]
     Unauthorized,
+    #[msg("Invalid Account")]
+    InvalidAccount,
+    #[msg("Invalid quantity, exceeded maximum allow mint quantity.")]
+    InvalidQuantity,
     #[msg("Already won.")]
     AlreadyWon,
     #[msg("Randomness already revealed.")]
