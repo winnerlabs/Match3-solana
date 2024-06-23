@@ -64,7 +64,6 @@ impl<'info> MintScratchcard<'info> {
             inviter_config.is_initialized = true;
             inviter_config.bump = ctx.bumps.inviter_config;
             inviter_config.credits = 0;
-            inviter_config.owned_scratchcard = 0;
             player_config.inviter_pubkey = Pubkey::default();
             msg!("inviter_config is initialized successfully");
         }
@@ -74,7 +73,6 @@ impl<'info> MintScratchcard<'info> {
             player_config.is_initialized = true;
             player_config.bump = ctx.bumps.player_config;
             player_config.credits = 0;
-            player_config.owned_scratchcard = 0;
             player_config.inviter_pubkey = Pubkey::default();        // placeholder, will be updated later
             msg!("player_config is initialized successfully");
         }
@@ -86,7 +84,7 @@ impl<'info> MintScratchcard<'info> {
             inviter_config.credits.checked_add(5).unwrap();
             msg!("Bind invitation relationship, inviter credits: {}, player credits: {}", inviter_config.credits, player_config.credits);
         }
-
+        msg!("before mint total scratchcard: {}", match3_info.total_scratchcard);
         for index in 0..mint_quantity {
             // mint scratchcard cNFTs
             MintV1CpiBuilder::new(&ctx.accounts.bubblegum_program.to_account_info())
@@ -127,7 +125,6 @@ impl<'info> MintScratchcard<'info> {
                 msg!("[mint scratchcard] inviter credits: {}", inviter_config.credits)
             }
             match3_info.total_scratchcard += 1;
-            player_config.owned_scratchcard += 1;
             msg!("total scratchcard: {}", match3_info.total_scratchcard);
         }
         Ok(())

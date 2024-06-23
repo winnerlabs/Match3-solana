@@ -11,7 +11,7 @@
         "@metaplex-foundation/umi-signer-wallet-adapters": "^0.9.1",
         "@solana/wallet-adapter-react": "^0.15.35",
         "@switchboard-xyz/on-demand": "^1.0.52",
-        "@winnerlabs/match3": "^1.0.1"
+        "@winnerlabs/match3": "^1.0.73"
     },
     "devDependencies": {
         "@types/bn.js": "^5.1.0",

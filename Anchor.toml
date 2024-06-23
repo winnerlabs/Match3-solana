@@ -5,16 +5,16 @@ seeds = false
 skip-lint = false
 
 [programs.devnet]
-match_3 = "Bo62M4w6RYsffaCxKSNa1GnZX1waKJcBsrrPm68HXvae"
+match_3 = "45jqMGFZJ7FqiKxNgnsJvYjznhspjZBXxV3sotnkhUT3"
 
 [programs.localnet]
-match_3 = "Bo62M4w6RYsffaCxKSNa1GnZX1waKJcBsrrPm68HXvae"
+match_3 = "45jqMGFZJ7FqiKxNgnsJvYjznhspjZBXxV3sotnkhUT3"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "Devnet"
 wallet = "/Users/star/.config/solana/id.json"
 
 [scripts]

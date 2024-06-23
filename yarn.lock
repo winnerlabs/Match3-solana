@@ -2292,7 +2292,7 @@
     protobufjs "^7.2.6"
     yaml "^2.2.1"
 
-"@switchboard-xyz/on-demand@^1.0.52":
+"@switchboard-xyz/on-demand@^1.0.52", "@switchboard-xyz/on-demand@^1.0.54":
   version "1.0.54"
   resolved "https://registry.npmjs.org/@switchboard-xyz/on-demand/-/on-demand-1.0.54.tgz"
   integrity sha512-zuQfNf613Qf0oP9iAlSbfO1eiiXUU2+7gvRJjUuxMnODKHIaky1OxeedwFF3RNPid0+gjamqlWFO5c3tkRPUfw==
@@ -2487,10 +2487,10 @@
   dependencies:
     "@wallet-standard/base" "^1.0.1"
 
-"@winnerlabs/match3@^1.0.1":
-  version "1.0.65"
-  resolved "https://registry.npmjs.org/@winnerlabs/match3/-/match3-1.0.65.tgz"
-  integrity sha512-geM1pg8234ed+8s3vhKsF6vSelkTgZnQQKL5A0FAU+vzvFSq3eM6y9n47t/gpidhhx0onagYVDlAW9ZxxPKVNg==
+"@winnerlabs/match3@^1.0.73":
+  version "1.0.78"
+  resolved "https://registry.npmjs.org/@winnerlabs/match3/-/match3-1.0.78.tgz"
+  integrity sha512-Ywpr0BiK6ZfDqr1q6bIT9XlPYmzeTyxMvAZOlh1AONOIC+kBByKupWIhNjki12wQ0Iqm7WydWAJSWY1jT1FbJg==
   dependencies:
     "@coral-xyz/anchor" "^0.29.0"
     "@metaplex-foundation/mpl-bubblegum" "^4.1.0"
@@ -2498,6 +2498,7 @@
     "@metaplex-foundation/umi" "^0.9.1"
     "@metaplex-foundation/umi-web3js-adapters" "^0.9.1"
     "@solana/spl-account-compression" "^0.2.1"
+    "@switchboard-xyz/on-demand" "^1.0.54"
 
 abort-controller@^3.0.0:
   version "3.0.0"

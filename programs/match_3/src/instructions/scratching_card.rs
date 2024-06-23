@@ -1,6 +1,8 @@
 pub use anchor_lang::prelude::*;
 use switchboard_on_demand::accounts::RandomnessAccountData;
 use switchboard_on_demand::prelude::rust_decimal::prelude::ToPrimitive;
+// use mpl_bubblegum::instructions::VerifyLeafCpiBuilder;
+// use mpl_bubblegum::types::LeafSchema;
 use crate::state::*;
 use crate::constants::*;
 use crate::errors::*;
@@ -8,16 +10,25 @@ use crate::transfer_sol;
 
 #[derive(Accounts)]
 pub struct ScratchingCard<'info> {
-    #[account(mut)]
-    pub player: Signer<'info>,
     #[account(
         mut,
-        seeds = [scratchcard.card_id.to_le_bytes().as_ref(), player.key().as_ref()],
-        bump = scratchcard.bump,
+        address = leaf_owner.key() @ErrorCodeCustom::InvalidAccount,
+    )]
+    player: Signer<'info>,
+    #[account(
+        init_if_needed,
+        payer = player,
+        seeds = [b"scratchcard".as_ref(), leaf_asset_id.key().as_ref()],
+        bump,
+        space = 8 + ScratchCard::LEN
     )]
     scratchcard: Account<'info, ScratchCard>,
+    /// CHECK: This account is neither written to nor read from.
+    leaf_owner: UncheckedAccount<'info>,
+    /// CHECK: This account is neither written to nor read from.
+    leaf_asset_id: UncheckedAccount<'info>,
     /// CHECK: The account's data is validated manually within the handler.
-    pub randomness_account_data: AccountInfo<'info>,
+    randomness_account_data: AccountInfo<'info>,
     #[account(
         mut,
         seeds = [b"player_config".as_ref(), player.key().as_ref()],
@@ -35,6 +46,15 @@ pub struct ScratchingCard<'info> {
 impl<'info> ScratchingCard<'info> {
     pub fn process(ctx: Context<ScratchingCard>, scratching_position: u8) -> Result<()> {
         let scratchcard = &mut ctx.accounts.scratchcard;
+        if !scratchcard.is_initialized {
+            msg!("Scratching card is not initialized");
+            scratchcard.bump = ctx.bumps.scratchcard;
+            scratchcard.is_initialized = true;
+            scratchcard.is_win = false;
+            scratchcard.number_of_scratched = 0;
+            scratchcard.latest_scratched_pattern = 0;
+            scratchcard.pattern_contents = vec![1, 1, 1, 2, 2, 2, 3, 3, 3];  // 1:WIF, 2:BONK, 3:BOME
+        }
         require!(!scratchcard.is_win, ErrorCodeCustom::AlreadyWon);
         let player = &ctx.accounts.player.to_account_info();
         let player_config = &mut ctx.accounts.player_config;
@@ -42,7 +62,7 @@ impl<'info> ScratchingCard<'info> {
         let system_program = &ctx.accounts.system_program.to_account_info();
         let pattern_result;
         scratchcard.number_of_scratched += 1;
-        msg!("Scratching card {}", scratchcard.number_of_scratched);
+        msg!("Card scratching times: {}", scratchcard.number_of_scratched);
         match scratchcard.number_of_scratched {
             1 | 2  => {
                 // The 1st, 2nd time free scratching card
