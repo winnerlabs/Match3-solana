@@ -38,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.LoadProgramIdl = void 0;
 var anchor = require("@coral-xyz/anchor");
-var chai_1 = require("chai");
 var fs = require("fs");
 var mpl_bubblegum_1 = require("@metaplex-foundation/mpl-bubblegum");
 var mpl_token_metadata_1 = require("@metaplex-foundation/mpl-token-metadata");
@@ -52,7 +51,7 @@ describe("match3", function () {
     anchor.setProvider(provider);
     var wallet = anchor.Wallet.local();
     var match3 = new match3_1.Match3(provider);
-    var umi = umi_bundle_defaults_1.createUmi('https://api.devnet.solana.com')
+    var umi = umi_bundle_defaults_1.createUmi('https://devnet.helius-rpc.com/?api-key=32e59a48-db47-494f-a6b6-61d9cbf64a25')
         .use(mpl_token_metadata_1.mplTokenMetadata())
         .use(mpl_bubblegum_1.mplBubblegum())
         .use(digital_asset_standard_api_1.dasApi())
@@ -71,90 +70,48 @@ describe("match3", function () {
     //   [Buffer.from("player_config"), PublicKey.default.toBuffer()],
     //   program.programId
     // );
-    it("init match3 game!", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var match3Info;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, match3.initMatch3Info(wallet.payer)];
-                case 1:
-                    _a.sent();
-                    return [4 /*yield*/, match3.addNewTree(wallet.payer, umi)];
-                case 2:
-                    _a.sent();
-                    return [4 /*yield*/, match3.program.account.match3Info.fetch(match3_1.MATCH3_INFO_PDA)];
-                case 3:
-                    match3Info = _a.sent();
-                    chai_1.assert.equal(match3Info.totalScratchcard, 0);
-                    console.log("match3Info merkleTree: ", match3Info.merkleTree.toString());
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it("mint scratchcard!", function () { return __awaiter(void 0, void 0, void 0, function () {
-        var _a, assetId, credits;
+    // it("init match3 game!", async () => {
+    //   await match3.initMatch3Info(wallet.payer);
+    //   await match3.addNewTree(wallet.payer, umi);
+    //   // verify
+    //   const match3Info = await match3.program.account.match3Info.fetch(MATCH3_INFO_PDA);
+    //   assert.equal(match3Info.totalScratchcard, 0);
+    //   console.log("match3Info merkleTree: ", match3Info.merkleTree.toString());
+    // });
+    // it("mint scratchcard!", async () => {
+    // //   assert.equal(match3Info.totalScratchcard.toNumber(), 1);
+    // //   assert.equal(playerConfig.credits, 0);
+    // //   assert.equal(playerConfig.ownedScratchcard, 1);
+    // const [assetId, credits] =  await match3.mintScratchcard(wallet.payer, umi);
+    //     console.log("assetId: ", assetId.toString());
+    //     console.log("credits: ", credits);
+    // })
+    it("scratching scratchcard!", function () { return __awaiter(void 0, void 0, void 0, function () {
+        var rpcAssetList, assetId, _a, numberOfScratched, latestScratchedPattern, isWon, currentCredits;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, match3.mintScratchcard(wallet.payer, umi)];
+                case 0: return [4 /*yield*/, umi.rpc.getAssetsByOwner({ owner: umi.payer.publicKey })];
                 case 1:
-                    _a = _b.sent(), assetId = _a[0], credits = _a[1];
-                    console.log("assetId: ", assetId.toString());
-                    console.log("credits: ", credits);
+                    rpcAssetList = _b.sent();
+                    console.log("rpcAssetList: ", rpcAssetList);
+                    console.log("merketree:", rpcAssetList.items[0].compression.tree);
+                    console.log("json uri: ", rpcAssetList.items[0].content.json_uri);
+                    console.log("asset id: ", rpcAssetList.items[0].id);
+                    assetId = rpcAssetList.items[0].id;
+                    return [4 /*yield*/, match3.scratchingCard(wallet.payer, umi, assetId, 3)];
+                case 2:
+                    _a = _b.sent(), numberOfScratched = _a[0], latestScratchedPattern = _a[1], isWon = _a[2], currentCredits = _a[3];
+                    console.log("numberOfScratched: ", numberOfScratched);
+                    console.log("currentCredits: ", currentCredits);
+                    //   assert.equal(scratchcardInfo.cardId.toNumber(), 1);
+                    //   assert.equal(scratchcardInfo.numberOfScratched, 1);
+                    //   assert.equal(playerConfigInfo.credits, 2);
+                    console.log(" ✨ The pattern just scratched out is: ", latestScratchedPattern);
+                    console.log(" 🔮 you is win? let we check it: ", isWon);
                     return [2 /*return*/];
             }
         });
     }); });
-    // it("scratching scratchcard!", async () => {
-    //     // const rpcAssetList = await umi.rpc.getAssetsByOwner({owner: umi.payer.publicKey})
-    //     // console.log("rpcAssetList: ", rpcAssetList);
-    //     // console.log("merketree:", rpcAssetList.items[0].compression.tree)
-    //     // console.log("json uri: ", rpcAssetList.items[0].content.metadata.attributes)
-    //     // console.log("asset id: ", rpcAssetList.items[0].id)
-    //     const [assetId, _bump] = await findLeafAssetIdPda(umi, {
-    //       merkleTree,
-    //       leafIndex,
-    //     })
-    //     console.log("asset id: ", assetId.toString());
-    //     // const asset = await umi.rpc.getAsset(assetId);
-    //     const [numberOfScratched, latestScratchedPattern, isWon, currentCredits] = await match3.scratchingCard(wallet.payer, umi, assetId);
-    //     console.log("numberOfScratched: ", numberOfScratched);
-    //     console.log("latestScratchedPattern: ", latestScratchedPattern);
-    //     console.log("isWon: ", isWon);
-    //     console.log("currentCredits: ", currentCredits);
-    // //   const passed_in_card_id = 1;                    //The user-selected scratch card ID, passed in as a parameter
-    // //   // Switchboard sbQueue fixed
-    //   // const sbQueue = new PublicKey("FfD96yeXs4cxZshoPPSKhSPgVQxLAJUT3gefgh84m1Di");
-    //   // console.log("sb programid: ", SB_ON_DEMAND_PID.toString());
-    //   // const sbProgram = new Program(LoadProgramIdl("tests/sb_on_demand_dev.json"), SB_ON_DEMAND_PID);
-    //   // const rngKp = Keypair.generate();
-    //   // const [randomness, ix] = await Randomness.create(sbProgram, rngKp, sbQueue);
-    //   // const commitIx = await randomness.commitIx(sbQueue);
-    // //   console.log("randomness address: ", randomness.pubkey.toString());
-    // //   const tx = await InstructionUtils.asV0Tx(sbProgram, [ix, commitIx]);
-    // //   const sig = await provider.sendAndConfirm(tx, [user, rngKp]);
-    // //   console.log("Your create randomness transaction signature: ", sig);
-    // //   const [scratchcardPDA]=  anchor.web3.PublicKey.findProgramAddressSync(
-    // //     [new BN(passed_in_card_id).toArrayLike(Buffer, "le", 8), user.publicKey.toBuffer()],
-    // //     program.programId
-    // //   )
-    // //   console.log("scraping scratchcard scratchcardPDA: ", scratchcardPDA.toString());
-    // //   const scratchIx = await program.methods
-    // //   .scratchingCard(2)
-    // //   .accounts({
-    // //     scratchcard: scratchcardPDA,
-    // //     randomnessAccountData: randomness.pubkey,
-    // //     playerConfig: playerConfigPDA,
-    // //     match3Info: match3InfoPDA,
-    // //   })
-    // //   .instruction();
-    // //   await randomness.commitAndReveal([scratchIx], [user], sbQueue)
-    // //   const scratchcardInfo = await program.account.scratchCard.fetch(scratchcardPDA);
-    // //   const playerConfigInfo = await program.account.playerConfig.fetch(playerConfigPDA);
-    // //   assert.equal(scratchcardInfo.cardId.toNumber(), 1);
-    // //   assert.equal(scratchcardInfo.numberOfScratched, 1);
-    // //   assert.equal(playerConfigInfo.credits, 2);
-    // //   console.log(" ✨ The pattern just scratched out is: ", scratchcardInfo.latestScratchedPattern);
-    // //   console.log(" 🔮 you is win? let we check it: ", scratchcardInfo.isWin);
-    // })
 });
 function LoadProgramIdl(filepath) {
     return JSON.parse(fs.readFileSync(filepath, "utf8"));

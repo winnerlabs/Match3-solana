@@ -2488,9 +2488,9 @@
     "@wallet-standard/base" "^1.0.1"
 
 "@winnerlabs/match3@^1.0.73":
-  version "1.0.78"
-  resolved "https://registry.npmjs.org/@winnerlabs/match3/-/match3-1.0.78.tgz"
-  integrity sha512-Ywpr0BiK6ZfDqr1q6bIT9XlPYmzeTyxMvAZOlh1AONOIC+kBByKupWIhNjki12wQ0Iqm7WydWAJSWY1jT1FbJg==
+  version "1.0.81"
+  resolved "https://registry.npmjs.org/@winnerlabs/match3/-/match3-1.0.81.tgz"
+  integrity sha512-bAk5MAL/r7CPiprtNe4AggxISCuTGCc13T6ieT6hxz9Y8dDJXQbjF6M344neJX4LRdqlq6Ttf/yuTEI7NCK8uw==
   dependencies:
     "@coral-xyz/anchor" "^0.29.0"
     "@metaplex-foundation/mpl-bubblegum" "^4.1.0"
